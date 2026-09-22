@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Pricilla Mart</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <!-- LOGO -->
+            <a href="index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+
+            <!-- NAVIGATION -->
+            <ul class="nav-links">
+
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="products.html">
+                        <i class="fas fa-box"></i>
+                        Products
+                    </a>
+                </li>
+
+                <li>
+                    <a href="login.html">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==================== REGISTER FORM ==================== -->
+
+    <main class="main-content">
+
+        <div class="auth-wrapper">
+
+            <div class="auth-card">
+
+                <!-- HEADER -->
+
+                <div class="auth-header">
+
+                    <h2>Join Pricilla Mart</h2>
+
+                    <p>
+                        Create an individual Buyer or Seller account
+                    </p>
+
+                </div>
+
+
+                <!-- REGISTER FORM -->
+
+                <form id="register-form">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="reg-name">
+                            <i class="fas fa-user"></i>
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="reg-name"
+                            class="form-control"
+                            placeholder="e.g. John Doe"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="reg-email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="reg-email"
+                            class="form-control"
+                            placeholder="name@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="reg-phone">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="reg-phone"
+                            class="form-control"
+                            placeholder="+91 9876543210"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ACCOUNT ROLE -->
+
+                    <div class="form-group">
+
+                        <label for="reg-role">
+                            <i class="fas fa-user-tag"></i>
+                            Select Account Role
+                        </label>
+
+                        <select
+                            id="reg-role"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="buyer">
+                                Buyer (Shop, cart, orders & reviews)
+                            </option>
+
+                            <option value="seller">
+                                Seller (Manage products, inventory & orders)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="reg-password">
+                            <i class="fas fa-lock"></i>
+                            Password (min 6 characters)
+                        </label>
+
+                        <input
+                            type="password"
+                            id="reg-password"
+                            class="form-control"
+                            placeholder="Create secure password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="reg-confirm-password">
+                            <i class="fas fa-check-double"></i>
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="reg-confirm-password"
+                            class="form-control"
+                            placeholder="Re-enter password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CREATE ACCOUNT -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-block"
+                        style="margin-top: 1rem;"
+                    >
+
+                        <i class="fas fa-user-plus"></i>
+                        Create My Account
+
+                    </button>
+
+                </form>
+
+
+                <!-- LOGIN LINK -->
+
+                <div
+                    style="
+                        text-align: center;
+                        margin-top: 1.5rem;
+                        font-size: 0.9rem;
+                    "
+                >
+
+                    Already have an account?
+
+                    <a
+                        href="login.html"
+                        style="
+                            font-weight: 700;
+                            color: var(--primary);
+                        "
+                    >
+                        Sign In here
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==================== FOOTER ==================== -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            &copy; 2026 Pricilla Mart -
+            Multi Seller Online Shopping |
+            Capstone Project
+
+        </div>
+
+    </footer>
+
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
+
+</body>
+
+</html>

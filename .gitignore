@@ -1,0 +1,45 @@
+# Build directories
+build/
+bin/
+out/
+.cache/
+cmake-build-*/
+
+# Executables and libraries
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.obj
+*.o
+
+# Environment variables & secrets
+.env
+.env.local
+.env.production
+*.key
+*.pem
+
+# Database files (local runtime)
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+
+# IDE & Editor configs
+.vscode/
+.vs/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Received Orders - Seller Hub | Pricilla Mart</title>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-store"></i> Customer Storefront</a></li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- DASHBOARD LAYOUT -->
+    <main class="main-content">
+        <div class="dashboard-layout">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <i class="fas fa-store-alt"></i> Seller Hub
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="/seller/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/seller/products.html"><i class="fas fa-boxes"></i> My Products</a></li>
+                    <li><a href="/seller/orders.html" class="active"><i class="fas fa-shipping-fast"></i> Received Orders</a></li>
+                    <li><a href="/profile.html"><i class="fas fa-user-cog"></i> Profile</a></li>
+                    <li><a href="#" onclick="Auth.logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <section class="dashboard-main">
+                <div style="margin-bottom: 1.5rem;">
+                    <h1 style="font-size: 1.8rem; margin: 0;">Received Customer Orders</h1>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Fulfill customer purchases and update dispatch status</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer & Phone</th>
+                                <th>Ordered Items</th>
+                                <th>Total Price</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                                <th>Update Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seller-orders-table-body">
+                            <!-- Populated dynamically via dashboard.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/orders.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Dashboard.loadSellerOrders();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Pricilla Mart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <div class="nav-search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="nav-search-input" placeholder="Search products...">
+            </div>
+
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/products.html" class="active"><i class="fas fa-box"></i> Products</a></li>
+                <li>
+                    <a href="/cart.html">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                        <span class="badge cart-count-badge">0</span>
+                    </a>
+                </li>
+                <li><a href="/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="main-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 style="font-size: 1.8rem; margin: 0;">Product Catalog</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Browse genuine products from top multi-sellers</p>
+            </div>
+            
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <label for="catalog-sort" style="font-size: 0.85rem; font-weight: 600;">Sort By:</label>
+                <select id="catalog-sort" class="form-select" style="width: auto; padding: 0.4rem 0.8rem;">
+                    <option value="">Latest Arrivals</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CATEGORIES FILTER -->
+        <div class="category-chips" id="category-chips-container">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="product-grid" id="product-grid-container">
+            <!-- Dynamically populated -->
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/cart.js"></script>
+    <script src="/js/products.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q') || '';
+            const categoryId = urlParams.get('category_id') || '';
+
+            if (query && document.getElementById('nav-search-input')) {
+                document.getElementById('nav-search-input').value = query;
+            }
+
+            Products.loadCategories();
+            Products.loadProducts({ q: query, category_id: categoryId });
+
+            const sortSelect = document.getElementById('catalog-sort');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', () => {
+                    const currentQ = document.getElementById('nav-search-input').value.trim();
+                    Products.loadProducts({ q: currentQ, sort: sortSelect.value });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

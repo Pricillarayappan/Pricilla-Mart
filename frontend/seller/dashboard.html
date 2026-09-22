@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Dashboard - Pricilla Mart</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="../index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="../index.html">
+                        <i class="fas fa-store"></i>
+                        Customer Storefront
+                    </a>
+                </li>
+
+                <li id="nav-auth-container"></li>
+            </ul>
+
+        </div>
+    </header>
+
+
+    <!-- ================= DASHBOARD ================= -->
+    <main class="main-content">
+
+        <div class="dashboard-layout">
+
+            <!-- ================= SIDEBAR ================= -->
+            <aside class="sidebar">
+
+                <div class="sidebar-brand">
+                    <i class="fas fa-store-alt"></i>
+                    Seller Hub
+                </div>
+
+                <ul class="sidebar-menu">
+
+                    <li>
+                        <a href="dashboard.html" class="active">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="products.html">
+                            <i class="fas fa-boxes"></i>
+                            My Products
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="orders.html">
+                            <i class="fas fa-shipping-fast"></i>
+                            Received Orders
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../profile.html">
+                            <i class="fas fa-user-cog"></i>
+                            Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" onclick="Auth.logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+
+                </ul>
+
+            </aside>
+
+
+            <!-- ================= MAIN DASHBOARD ================= -->
+            <section class="dashboard-main">
+
+                <!-- Dashboard Header -->
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                    "
+                >
+
+                    <div>
+
+                        <h1 style="font-size: 1.8rem; margin: 0;">
+                            Seller Analytics & Overview
+                        </h1>
+
+                        <p
+                            style="
+                                color: var(--text-muted);
+                                font-size: 0.9rem;
+                            "
+                        >
+                            Manage store inventory, performance, and orders
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="Dashboard.openAddProductModal()"
+                    >
+                        <i class="fas fa-plus"></i>
+                        Add New Product
+                    </button>
+
+                </div>
+
+
+                <!-- ================= STATS CARDS ================= -->
+                <div class="stats-cards-grid">
+
+                    <!-- Products -->
+                    <div class="stat-card">
+
+                        <span class="stat-card-title">
+                            <i class="fas fa-box"></i>
+                            My Products
+                        </span>
+
+                        <div
+                            class="stat-card-val"
+                            id="seller-stat-products"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <!-- Orders -->
+                    <div class="stat-card">
+
+                        <span class="stat-card-title">
+                            <i class="fas fa-shopping-bag"></i>
+                            Total Orders
+                        </span>
+
+                        <div
+                            class="stat-card-val"
+                            id="seller-stat-orders"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <!-- Revenue -->
+                    <div class="stat-card">
+
+                        <span class="stat-card-title">
+                            <i class="fas fa-rupee-sign"></i>
+                            Gross Revenue
+                        </span>
+
+                        <div
+                            class="stat-card-val"
+                            id="seller-stat-revenue"
+                        >
+                            ₹0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= PRODUCT LISTINGS ================= -->
+
+                <div class="section-header">
+
+                    <h2 class="section-title">
+                        My Product Listings
+                    </h2>
+
+                    <a
+                        href="products.html"
+                        style="
+                            font-weight: 600;
+                            font-size: 0.9rem;
+                        "
+                    >
+                        Manage All
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <!-- Product Table -->
+                <div class="table-responsive">
+
+                    <table class="custom-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Rating</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="seller-products-table-body">
+
+                            <!--
+                                Products will be loaded
+                                dynamically using dashboard.js
+                            -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= PRODUCT MODAL ================= -->
+
+    <div
+        class="modal-backdrop"
+        id="product-modal"
+    >
+
+        <div class="modal-card">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+
+                <h3 id="product-modal-title">
+                    Add New Product
+                </h3>
+
+                <button
+                    class="modal-close"
+                    onclick="Dashboard.closeProductModal()"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <!-- Product Form -->
+            <form
+                id="product-modal-form"
+                onsubmit="Dashboard.saveProductForm(event)"
+            >
+
+                <div class="modal-body">
+
+                    <!-- Product ID -->
+                    <input
+                        type="hidden"
+                        id="modal-prod-id"
+                    >
+
+
+                    <!-- Product Name -->
+                    <div class="form-group">
+
+                        <label for="modal-prod-name">
+                            Product Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="modal-prod-name"
+                            class="form-control"
+                            required
+                            placeholder="e.g. Smart Noise Cancelling Headphones"
+                        >
+
+                    </div>
+
+
+                    <!-- Category -->
+                    <div class="form-group">
+
+                        <label for="modal-prod-category">
+                            Category *
+                        </label>
+
+                        <select
+                            id="modal-prod-category"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="1">
+                                Electronics
+                            </option>
+
+                            <option value="2">
+                                Fashion
+                            </option>
+
+                            <option value="3">
+                                Accessories
+                            </option>
+
+                            <option value="4">
+                                Home
+                            </option>
+
+                            <option value="5">
+                                Beauty
+                            </option>
+
+                            <option value="6">
+                                Books
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Price + Stock -->
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 1rem;
+                        "
+                    >
+
+                        <!-- Price -->
+                        <div class="form-group">
+
+                            <label for="modal-prod-price">
+                                Price (₹) *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="modal-prod-price"
+                                class="form-control"
+                                step="0.01"
+                                min="1"
+                                required
+                                placeholder="999"
+                            >
+
+                        </div>
+
+
+                        <!-- Stock -->
+                        <div class="form-group">
+
+                            <label for="modal-prod-stock">
+                                Stock Quantity *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="modal-prod-stock"
+                                class="form-control"
+                                min="0"
+                                required
+                                placeholder="50"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Image URL -->
+                    <div class="form-group">
+
+                        <label for="modal-prod-image">
+                            Image URL
+                        </label>
+
+                        <input
+                            type="url"
+                            id="modal-prod-image"
+                            class="form-control"
+                            placeholder="https://images.unsplash.com/..."
+                        >
+
+                    </div>
+
+
+                    <!-- Description -->
+                    <div class="form-group">
+
+                        <label for="modal-prod-desc">
+                            Description *
+                        </label>
+
+                        <textarea
+                            id="modal-prod-desc"
+                            class="form-control"
+                            rows="3"
+                            required
+                            placeholder="Detailed product specifications and highlights"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="Dashboard.closeProductModal()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        <i class="fas fa-save"></i>
+                        Save Product
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            &copy; 2026 Pricilla Mart -
+            Multi Seller Online Shopping |
+            Capstone Project
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="../js/api.js"></script>
+
+    <script src="../js/auth.js"></script>
+
+    <script src="../js/dashboard.js"></script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            Dashboard.initSellerDashboard();
+
+        });
+
+    </script>
+
+</body>
+
+</html>

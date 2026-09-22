@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Pricilla Mart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <div class="nav-search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="nav-search-input" placeholder="Search catalog...">
+            </div>
+
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li>
+                    <a href="/cart.html">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                        <span class="badge cart-count-badge">0</span>
+                    </a>
+                </li>
+                <li><a href="/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="main-content">
+        <!-- BREADCRUMB -->
+        <div style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+            <a href="/index.html">Home</a> &gt; <a href="/products.html">Products</a> &gt; <span>Product Details</span>
+        </div>
+
+        <!-- PRODUCT DETAILS CONTAINER -->
+        <div id="product-detail-container">
+            <div style="text-align: center; padding: 4rem; color: var(--secondary);">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top: 1rem;">Loading product information...</p>
+            </div>
+        </div>
+
+        <!-- REVIEWS & RATINGS SECTION -->
+        <section id="reviews-section" style="margin-top: 3rem;">
+            <div class="section-header">
+                <h2 class="section-title">Customer Reviews & Ratings</h2>
+                <span id="reviews-count-badge" class="badge" style="background: var(--primary); font-size: 0.85rem;">0 Reviews</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- REVIEW SUBMISSION CARD -->
+                <div style="background: var(--card-bg); padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); height: fit-content;">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--primary);">Write a Product Review</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">Share your genuine experience with fellow buyers.</p>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">Select Star Rating:</label>
+                        <div class="star-rating-picker" style="font-size: 1.5rem; cursor: pointer; color: #d48b11; display: flex; gap: 0.3rem;">
+                            <i class="fas fa-star" data-value="1"></i>
+                            <i class="fas fa-star" data-value="2"></i>
+                            <i class="fas fa-star" data-value="3"></i>
+                            <i class="fas fa-star" data-value="4"></i>
+                            <i class="fas fa-star" data-value="5"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review-comment-input">Your Feedback / Comments:</label>
+                        <textarea id="review-comment-input" class="form-control" rows="4" placeholder="How was the product quality, packaging, and performance?"></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-block" id="submit-review-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
+                </div>
+
+                <!-- REVIEWS LIST -->
+                <div id="reviews-list-container">
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fas fa-spinner fa-spin"></i> Loading customer reviews...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/cart.js"></script>
+    <script src="/js/reviews.js"></script>
+    <script src="/js/products.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Products.loadProductDetails();
+            Reviews.initRatingPicker();
+
+            const submitBtn = document.getElementById('submit-review-btn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const pId = parseInt(urlParams.get('id'));
+                    if (pId) Reviews.submitReview(pId);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

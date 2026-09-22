@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Pricilla Mart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR --!>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="/cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                <li><a href="/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="main-content">
+        <div class="auth-wrapper" style="min-height: 50vh;">
+            <div class="auth-card" style="max-width: 600px;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 1rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2 id="profile-name" style="margin: 0; color: var(--primary);">User Name</h2>
+                    <span id="profile-role-badge" class="user-badge" style="background: var(--primary); color: #fff; display: inline-block; margin-top: 0.5rem;">BUYER</span>
+                </div>
+
+                <div style="background: var(--white); border-radius: var(--radius-md); padding: 1.5rem; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <div class="summary-row" style="padding-bottom: 0.8rem; border-bottom: 1px solid #eee;">
+                        <span><i class="fas fa-envelope" style="color: var(--secondary); width: 20px;"></i> Email:</span>
+                        <strong id="profile-email">--</strong>
+                    </div>
+                    <div class="summary-row" style="padding: 0.8rem 0; border-bottom: 1px solid #eee;">
+                        <span><i class="fas fa-phone" style="color: var(--secondary); width: 20px;"></i> Phone:</span>
+                        <strong id="profile-phone">--</strong>
+                    </div>
+                    <div class="summary-row" style="padding-top: 0.8rem;">
+                        <span><i class="fas fa-id-badge" style="color: var(--secondary); width: 20px;"></i> User ID:</span>
+                        <strong id="profile-id">--</strong>
+                    </div>
+                </div>
+
+                <div id="profile-role-actions" style="margin-bottom: 1rem;">
+                    <!-- Injected according to role -->
+                </div>
+
+                <button class="btn btn-danger btn-block" onclick="Auth.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout from Account
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = API.getUser();
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            document.getElementById('profile-name').innerText = user.name;
+            document.getElementById('profile-email').innerText = user.email;
+            document.getElementById('profile-phone').innerText = user.phone;
+            document.getElementById('profile-id').innerText = `#${user.id}`;
+            document.getElementById('profile-role-badge').innerText = user.role.toUpperCase();
+
+            const actionsDiv = document.getElementById('profile-role-actions');
+            if (user.role === 'admin') {
+                actionsDiv.innerHTML = `
+                    <a href="/admin/dashboard.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                        <i class="fas fa-shield-alt"></i> Enter Admin Control Center
+                    </a>
+                `;
+            } else if (user.role === 'seller') {
+                actionsDiv.innerHTML = `
+                    <a href="/seller/dashboard.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                        <i class="fas fa-store"></i> Open Seller Dashboard
+                    </a>
+                `;
+            } else {
+                actionsDiv.innerHTML = `
+                    <a href="/orders.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                        <i class="fas fa-clipboard-list"></i> View My Order History
+                    </a>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Pricilla Mart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li>
+                    <a href="/cart.html">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                        <span class="badge cart-count-badge">0</span>
+                    </a>
+                </li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- CHECKOUT BODY -->
+    <main class="main-content">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 1.8rem; margin: 0;">Checkout & Confirmation</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Provide delivery destination to confirm your order</p>
+        </div>
+
+        <div class="cart-layout">
+            <!-- DELIVERY FORM -->
+            <div style="background: var(--card-bg); padding: 2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+                <h3 style="margin-bottom: 1.2rem; color: var(--primary);"><i class="fas fa-map-marker-alt"></i> Shipping & Delivery Details</h3>
+                
+                <form id="checkout-form">
+                    <div class="form-group">
+                        <label for="checkout-name"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="checkout-name" class="form-control" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="checkout-email"><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="checkout-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-phone"><i class="fas fa-phone"></i> Contact Phone</label>
+                            <input type="tel" id="checkout-phone" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-address"><i class="fas fa-home"></i> Complete Delivery Address</label>
+                        <textarea id="checkout-address" class="form-control" rows="3" placeholder="House/Flat number, Street name, Landmark, City, State, Pincode" required></textarea>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.85rem; border: 1px dashed var(--secondary);">
+                        <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                        <strong>Capstone Notice:</strong> There is no real payment gateway integration needed for this academic project. Your order confirmation will instantly reserve inventory in the C++ SQLite database.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="padding: 0.8rem; font-size: 1.05rem;">
+                        <i class="fas fa-check-circle"></i> CONFIRM ORDER
+                    </button>
+                </form>
+            </div>
+
+            <!-- ORDER SUMMARY PREVIEW -->
+            <div>
+                <div class="order-summary-card">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                        Order Items Summary
+                    </h3>
+                    <div id="checkout-items-summary" style="margin-bottom: 1rem; max-height: 250px; overflow-y: auto;">
+                        <p style="color: var(--text-muted);">Loading items...</p>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <strong style="color: var(--success);">FREE</strong>
+                    </div>
+
+                    <div class="summary-row summary-total">
+                        <span>Grand Total:</span>
+                        <span id="checkout-total-amount">₹0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-backdrop" id="order-success-modal">
+        <div class="modal-card" style="text-align: center;">
+            <div class="modal-header" style="background: var(--success); justify-content: center;">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-check-circle"></i> ORDER SUCCESSFUL
+                </h3>
+            </div>
+            <div class="modal-body" style="padding: 2.5rem 1.8rem;">
+                <div style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;">
+                    <i class="fas fa-box-check"></i>
+                </div>
+                <h2>Thank you for your order!</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Your multi-seller order has been saved in the database and product stock has been deducted.
+                </p>
+
+                <div style="background: var(--input-bg); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">UNIQUE ORDER ID:</span>
+                    <div id="success-order-code" style="font-size: 1.8rem; font-weight: 900; color: var(--primary); letter-spacing: 1px;">
+                        PRC10001
+                    </div>
+                    <div id="success-order-amount" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary); margin-top: 0.3rem;">
+                        ₹0
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <a href="/orders.html" class="btn btn-primary">
+                        <i class="fas fa-clipboard-list"></i> View My Orders
+                    </a>
+                    <a href="/products.html" class="btn btn-outline">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/orders.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Orders.initCheckout();
+        });
+    </script>
+</body>
+</html>

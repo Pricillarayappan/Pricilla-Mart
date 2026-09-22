@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pricilla Mart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="brand-logo">
+                <span class="brand-title">PRICILLA</span>
+                <span class="brand-subtitle">MART</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/index.html"><i class="fas fa-store"></i> Customer Storefront</a></li>
+                <li id="nav-auth-container"></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- DASHBOARD LAYOUT -->
+    <main class="main-content">
+        <div class="dashboard-layout">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <i class="fas fa-shield-alt"></i> Admin Panel
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="/admin/dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="/admin/users.html"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="/admin/products.html"><i class="fas fa-boxes"></i> Products</a></li>
+                    <li><a href="/admin/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                    <li><a href="/profile.html"><i class="fas fa-user-cog"></i> Profile</a></li>
+                    <li><a href="#" onclick="Auth.logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <section class="dashboard-main">
+                <div style="margin-bottom: 1.5rem;">
+                    <h1 style="font-size: 1.8rem; margin: 0;">Platform Executive Overview</h1>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Real-time metrics, user growth, inventory audit, and revenue analytics</p>
+                </div>
+
+                <!-- STATS CARDS -->
+                <div class="stats-cards-grid">
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-users"></i> TOTAL USERS</span>
+                        <div class="stat-card-val" id="admin-stat-users">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-user"></i> TOTAL BUYERS</span>
+                        <div class="stat-card-val" id="admin-stat-buyers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-store"></i> TOTAL SELLERS</span>
+                        <div class="stat-card-val" id="admin-stat-sellers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-box-open"></i> TOTAL PRODUCTS</span>
+                        <div class="stat-card-val" id="admin-stat-products">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-shopping-cart"></i> TOTAL ORDERS</span>
+                        <div class="stat-card-val" id="admin-stat-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-title"><i class="fas fa-rupee-sign"></i> TOTAL SALES</span>
+                        <div class="stat-card-val" id="admin-stat-sales">₹0</div>
+                    </div>
+                </div>
+
+                <!-- QUICK AUDIT LINKS -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                    <div style="background: var(--card-bg); padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <h3 style="color: var(--primary); font-size: 1.2rem;"><i class="fas fa-user-shield"></i> User Governance</h3>
+                        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.8rem 0 1.2rem;">
+                            Audit registered buyers and multi-sellers. Inspect contact info, registration dates, and account roles.
+                        </p>
+                        <a href="/admin/users.html" class="btn btn-primary btn-sm">Audit Users</a>
+                    </div>
+
+                    <div style="background: var(--card-bg); padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <h3 style="color: var(--primary); font-size: 1.2rem;"><i class="fas fa-trash-alt"></i> Product Moderation</h3>
+                        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.8rem 0 1.2rem;">
+                            Inspect seller catalogs across all categories. Remove inappropriate or prohibited listings with safety confirmation.
+                        </p>
+                        <a href="/admin/products.html" class="btn btn-primary btn-sm">Moderate Products</a>
+                    </div>
+
+                    <div style="background: var(--card-bg); padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <h3 style="color: var(--primary); font-size: 1.2rem;"><i class="fas fa-clipboard-check"></i> Orders & Logistics</h3>
+                        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.8rem 0 1.2rem;">
+                            View complete transaction records, delivery addresses, line items breakdown, and override shipment statuses.
+                        </p>
+                        <a href="/admin/orders.html" class="btn btn-primary btn-sm">View Platform Orders</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            &copy; 2026 Pricilla Mart - Multi Seller Online Shopping | Capstone Project
+        </div>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Dashboard.initAdminDashboard();
+        });
+    </script>
+</body>
+</html>
