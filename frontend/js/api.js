@@ -10,14 +10,16 @@
  */
 
 const API = {
-    // Dynamic Base URL detection
+    // Dynamic Base URL detection (Localhost vs Cloud Deployment)
     baseUrl: (() => {
         if (typeof window !== 'undefined' && window.location) {
             if (window.location.protocol.startsWith('http')) {
-                if (window.location.port === '8080') {
-                    return '/api';
+                // If running locally on an alternate port (e.g., Live Server on 5500), route to port 8080
+                if (window.location.hostname === 'localhost' && window.location.port !== '8080' && window.location.port !== '') {
+                    return 'http://localhost:8080/api';
                 }
-                return 'http://localhost:8080/api';
+                // On cloud hosts (Render, Railway, Heroku) or standard local port 8080, use same-origin /api
+                return '/api';
             }
         }
         return 'http://localhost:8080/api';

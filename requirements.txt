@@ -1,0 +1,3 @@
+# Pricilla Mart - Full-Stack REST Backend
+# Uses Python standard library (http.server, sqlite3, urllib, json, hashlib, base64)
+# No external pip dependencies required
