@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.*;
 
@@ -15,6 +17,12 @@ public class DatabaseService {
     @Value("${app.db.path:database/pricillamart.db}")
     private String dbPath;
 
+    @Value("${app.db.schema:database/schema.sql}")
+    private String schemaPath;
+
+    @Value("${app.db.seed:database/seed.sql}")
+    private String seedPath;
+
     private String connectionUrl;
 
     @PostConstruct
@@ -23,7 +31,7 @@ public class DatabaseService {
         if (!dbFile.isAbsolute()) {
             dbFile = new File(System.getProperty("user.dir"), dbPath);
         }
-        if (!dbFile.getParentFile().exists()) {
+        if (dbFile.getParentFile() != null && !dbFile.getParentFile().exists()) {
             dbFile.getParentFile().mkdirs();
         }
         connectionUrl = "jdbc:sqlite:" + dbFile.getAbsolutePath();
@@ -33,8 +41,77 @@ public class DatabaseService {
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = ON;");
             }
+
+            // Verify if tables exist; if not, initialize bundled schema & seed
+            boolean needsInit = false;
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='users';")) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    needsInit = true;
+                }
+            } catch (SQLException ignored) {
+                needsInit = true;
+            }
+
+            if (needsInit) {
+                System.out.println("[DatabaseService] Database tables not found. Bundling & executing schema.sql and seed.sql...");
+                executeSqlScript(conn, schemaPath, "schema.sql");
+                executeSqlScript(conn, seedPath, "seed.sql");
+                System.out.println("[DatabaseService] SQLite schema & seed successfully loaded.");
+            } else {
+                // Ensure payment_method column exists on orders table
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute("ALTER TABLE orders ADD COLUMN payment_method TEXT DEFAULT 'Cash on Delivery';");
+                } catch (SQLException ignored) {}
+            }
         } catch (SQLException e) {
             System.err.println("[DatabaseService] Error verifying database: " + e.getMessage());
+        }
+    }
+
+    private void executeSqlScript(Connection conn, String filePath, String resourceName) {
+        String sql = null;
+        File file = new File(filePath);
+        if (!file.isAbsolute()) {
+            file = new File(System.getProperty("user.dir"), filePath);
+        }
+        if (file.exists()) {
+            try {
+                sql = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                System.err.println("[DatabaseService] Error reading " + filePath + ": " + e.getMessage());
+            }
+        }
+        if (sql == null || sql.trim().isEmpty()) {
+            // Classpath fallback for bundled JAR resources
+            String[] resourcePaths = { "/" + resourceName, "/database/" + resourceName, "database/" + resourceName };
+            for (String rPath : resourcePaths) {
+                try (InputStream is = getClass().getResourceAsStream(rPath)) {
+                    if (is != null) {
+                        sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                        break;
+                    }
+                } catch (IOException ignored) {}
+            }
+        }
+
+        if (sql != null && !sql.trim().isEmpty()) {
+            try (Statement stmt = conn.createStatement()) {
+                for (String part : sql.split(";")) {
+                    String trimmed = part.trim();
+                    if (!trimmed.isEmpty() && !trimmed.startsWith("--")) {
+                        try {
+                            stmt.execute(trimmed);
+                        } catch (SQLException ex) {
+                            // Ignore harmless duplicate insert warnings
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("[DatabaseService] Notice running SQL script: " + ex.getMessage());
+            }
+        } else {
+            System.err.println("[DatabaseService] Warning: Could not locate SQL bundle for " + resourceName);
         }
     }
 

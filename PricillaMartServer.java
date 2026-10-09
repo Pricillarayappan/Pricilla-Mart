@@ -50,9 +50,31 @@ public class PricillaMartServer {
         // Verify SQLite JDBC driver or database
         try {
             Class.forName("org.xerial.sqlite.jdbc");
-            try (Connection conn = DriverManager.getConnection(connectionUrl);
-                 Statement st = conn.createStatement()) {
-                st.execute("PRAGMA foreign_keys = ON;");
+            try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+                try (Statement st = conn.createStatement()) {
+                    st.execute("PRAGMA foreign_keys = ON;");
+                }
+
+                boolean needsInit = false;
+                try (Statement st = conn.createStatement();
+                     ResultSet rs = st.executeQuery("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='users';")) {
+                    if (rs.next() && rs.getInt(1) == 0) {
+                        needsInit = true;
+                    }
+                } catch (SQLException ignored) {
+                    needsInit = true;
+                }
+
+                if (needsInit) {
+                    System.out.println("[+] Database is empty. Applying bundled SQL schema & seed...");
+                    executeSqlFile(conn, new File(BASE_DIR, "database/schema.sql"));
+                    executeSqlFile(conn, new File(BASE_DIR, "database/seed.sql"));
+                    System.out.println("[+] Database successfully seeded with sample tables & accounts.");
+                } else {
+                    try (Statement st = conn.createStatement()) {
+                        st.execute("ALTER TABLE orders ADD COLUMN payment_method TEXT DEFAULT 'Cash on Delivery';");
+                    } catch (SQLException ignored) {}
+                }
             }
             System.out.println("[+] SQLite JDBC connection established successfully.");
         } catch (ClassNotFoundException e) {
@@ -641,6 +663,28 @@ public class PricillaMartServer {
             }
             sb.append("]");
             return sb.toString();
+        }
+    }
+
+    private static void executeSqlFile(Connection conn, File file) {
+        if (!file.exists()) {
+            System.out.println("[!] SQL file does not exist: " + file.getAbsolutePath());
+            return;
+        }
+        try {
+            String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+            try (Statement st = conn.createStatement()) {
+                for (String part : content.split(";")) {
+                    String trimmed = part.trim();
+                    if (!trimmed.isEmpty() && !trimmed.startsWith("--")) {
+                        try {
+                            st.execute(trimmed);
+                        } catch (SQLException ignored) {}
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.err.println("[!] Error executing SQL script: " + ex.getMessage());
         }
     }
 }

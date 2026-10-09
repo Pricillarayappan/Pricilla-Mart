@@ -23,10 +23,10 @@ cmake-build-*/
 *.pem
 
 # Database files (local runtime)
-*.db
 *.sqlite
 *.sqlite3
-database/*.db
+# Keep the pre-seeded SQLite database for zero-config cloud deployments
+!database/pricillamart.db
 
 # IDE & Editor configs
 .vscode/
