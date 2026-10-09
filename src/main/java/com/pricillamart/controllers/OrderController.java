@@ -39,16 +39,24 @@ public class OrderController {
             String email = body.get("email");
             String phone = body.get("phone");
             String address = body.get("deliveryAddress");
+            String paymentMethod = body.get("paymentMethod");
+            if (paymentMethod == null) {
+                paymentMethod = body.get("payment_method");
+            }
+            if (paymentMethod == null || paymentMethod.trim().isEmpty()) {
+                paymentMethod = "Cash on Delivery";
+            }
 
             if (buyerName == null || email == null || phone == null || address == null) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("All checkout fields are required."));
             }
 
-            Order order = databaseService.createOrder(user.getUserId(), buyerName, email, phone, address);
+            Order order = databaseService.createOrder(user.getUserId(), buyerName, email, phone, address, paymentMethod);
 
             Map<String, Object> data = new HashMap<>();
             data.put("orderCode", order.getOrderCode());
             data.put("totalAmount", order.getTotalAmount());
+            data.put("paymentMethod", order.getPaymentMethod());
 
             return ResponseEntity.status(201).body(ApiResponse.success("Order placed successfully. Thank you for shopping with Pricilla Mart!", data));
         } catch (Exception e) {

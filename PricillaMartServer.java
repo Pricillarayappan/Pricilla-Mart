@@ -20,7 +20,17 @@ import java.util.concurrent.Executors;
  */
 public class PricillaMartServer {
 
-    private static final int PORT = 8080;
+    private static final int PORT = getPort();
+
+    private static int getPort() {
+        String envPort = System.getenv("PORT");
+        if (envPort != null && !envPort.trim().isEmpty()) {
+            try {
+                return Integer.parseInt(envPort.trim());
+            } catch (NumberFormatException ignored) {}
+        }
+        return 8080;
+    }
     private static final String BASE_DIR = System.getProperty("user.dir");
     private static final File FRONTEND_DIR = new File(BASE_DIR, "frontend");
     private static final File DB_FILE = new File(BASE_DIR, "database/pricillamart.db");

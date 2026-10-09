@@ -488,9 +488,17 @@ public class DatabaseService {
 
     // ---------------- ORDER OPERATIONS ----------------
     public Order createOrder(int buyerId, String buyerName, String email, String phone, String address) throws SQLException {
+        return createOrder(buyerId, buyerName, email, phone, address, "Cash on Delivery");
+    }
+
+    public Order createOrder(int buyerId, String buyerName, String email, String phone, String address, String paymentMethod) throws SQLException {
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);
             try {
+                if (paymentMethod == null || paymentMethod.trim().isEmpty()) {
+                    paymentMethod = "Cash on Delivery";
+                }
+
                 // Fetch cart items
                 String cartSql = "SELECT ci.product_id, p.seller_id, ci.quantity, p.price, p.stock_quantity " +
                                  "FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.user_id = ?;";
@@ -534,8 +542,8 @@ public class DatabaseService {
                 String orderCode = "PRC" + nextId;
 
                 // Insert Order
-                String oSql = "INSERT INTO orders (order_code, buyer_id, total_amount, buyer_name, email, phone, delivery_address, status) " +
-                              "VALUES (?, ?, ?, ?, ?, ?, ?, 'Confirmed');";
+                String oSql = "INSERT INTO orders (order_code, buyer_id, total_amount, buyer_name, email, phone, delivery_address, payment_method, status) " +
+                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Confirmed');";
                 int orderId = 0;
                 try (PreparedStatement ps = conn.prepareStatement(oSql, Statement.RETURN_GENERATED_KEYS)) {
                     ps.setString(1, orderCode);
@@ -545,6 +553,7 @@ public class DatabaseService {
                     ps.setString(5, email);
                     ps.setString(6, phone);
                     ps.setString(7, address);
+                    ps.setString(8, paymentMethod);
                     ps.executeUpdate();
                     try (ResultSet rs = ps.getGeneratedKeys()) {
                         if (rs.next()) {
@@ -591,6 +600,7 @@ public class DatabaseService {
                 order.setId(orderId);
                 order.setOrderCode(orderCode);
                 order.setTotalAmount(totalAmount);
+                order.setPaymentMethod(paymentMethod);
                 order.setStatus("Confirmed");
                 return order;
             } catch (Exception e) {
@@ -634,6 +644,9 @@ public class DatabaseService {
                     o.setEmail(rs.getString("email"));
                     o.setPhone(rs.getString("phone"));
                     o.setDeliveryAddress(rs.getString("delivery_address"));
+                    try {
+                        o.setPaymentMethod(rs.getString("payment_method"));
+                    } catch (Exception ignored) {}
                     o.setTotalAmount(rs.getDouble("total_amount"));
                     o.setStatus(rs.getString("status"));
                     o.setCreatedAt(rs.getString("created_at"));

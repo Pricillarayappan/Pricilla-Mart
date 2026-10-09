@@ -1,1 +1,1 @@
-web: python dev_server.py
+web: java PricillaMartServer.java
