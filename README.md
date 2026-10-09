@@ -2,6 +2,8 @@
 ### Multi-Seller Online Shopping E-Commerce Platform
 **Final Year College Capstone Project — Java Full-Stack**
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Pricillarayappan/Pricilla-Mart)
+
 ---
 
 ## 📌 Project Overview
