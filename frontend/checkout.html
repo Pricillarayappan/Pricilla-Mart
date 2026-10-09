@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Pricilla Mart</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="/index.html" class="brand-logo">
+            <a href="index.html" class="brand-logo">
                 <span class="brand-title">PRICILLA</span>
                 <span class="brand-subtitle">MART</span>
             </a>
 
             <ul class="nav-links">
-                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Products</a></li>
                 <li>
-                    <a href="/cart.html">
+                    <a href="cart.html">
                         <i class="fas fa-shopping-cart"></i> Cart
                         <span class="badge cart-count-badge">0</span>
                     </a>
@@ -45,17 +46,17 @@
                 <form id="checkout-form">
                     <div class="form-group">
                         <label for="checkout-name"><i class="fas fa-user"></i> Full Name</label>
-                        <input type="text" id="checkout-name" class="form-control" required>
+                        <input type="text" id="checkout-name" class="form-control" required placeholder="Full Name">
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
                             <label for="checkout-email"><i class="fas fa-envelope"></i> Email Address</label>
-                            <input type="email" id="checkout-email" class="form-control" required>
+                            <input type="email" id="checkout-email" class="form-control" required placeholder="name@example.com">
                         </div>
                         <div class="form-group">
                             <label for="checkout-phone"><i class="fas fa-phone"></i> Contact Phone</label>
-                            <input type="tel" id="checkout-phone" class="form-control" required>
+                            <input type="tel" id="checkout-phone" class="form-control" required placeholder="+91 9876543210">
                         </div>
                     </div>
 
@@ -64,13 +65,102 @@
                         <textarea id="checkout-address" class="form-control" rows="3" placeholder="House/Flat number, Street name, Landmark, City, State, Pincode" required></textarea>
                     </div>
 
-                    <div style="background: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.85rem; border: 1px dashed var(--secondary);">
-                        <i class="fas fa-info-circle" style="color: var(--primary);"></i>
-                        <strong>Capstone Notice:</strong> There is no real payment gateway integration needed for this academic project. Your order confirmation will instantly reserve inventory in the C++ SQLite database.
+                    <!-- ==================== PAYMENT METHODS ==================== -->
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label style="font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                            <i class="fas fa-wallet"></i> Choose Payment Method
+                        </label>
+                        
+                        <div class="payment-methods-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <!-- 1. Cash on Delivery -->
+                            <div class="pay-method-card active" id="pay-card-cod" onclick="Orders.selectPaymentMethod('Cash on Delivery')" style="cursor: pointer; border: 2px solid var(--primary); background: #fff; padding: 1rem 0.5rem; border-radius: var(--radius-md); text-align: center; transition: all 0.2s ease;">
+                                <input type="radio" name="payment-method-choice" id="pay-radio-cod" value="Cash on Delivery" checked style="display: none;">
+                                <i class="fas fa-money-bill-wave fa-2x" style="color: var(--secondary); margin-bottom: 0.5rem; display: block;"></i>
+                                <strong style="display: block; font-size: 0.85rem; color: var(--primary);">Cash on Delivery</strong>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">Pay upon arrival</span>
+                            </div>
+
+                            <!-- 2. UPI / QR Code -->
+                            <div class="pay-method-card" id="pay-card-upi" onclick="Orders.selectPaymentMethod('UPI')" style="cursor: pointer; border: 2px solid var(--border-color); background: #fff; padding: 1rem 0.5rem; border-radius: var(--radius-md); text-align: center; transition: all 0.2s ease;">
+                                <input type="radio" name="payment-method-choice" id="pay-radio-upi" value="UPI" style="display: none;">
+                                <i class="fas fa-qrcode fa-2x" style="color: var(--secondary); margin-bottom: 0.5rem; display: block;"></i>
+                                <strong style="display: block; font-size: 0.85rem; color: var(--primary);">UPI / QR Code</strong>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">GPay, PhonePe, Paytm</span>
+                            </div>
+
+                            <!-- 3. Credit / Debit Card -->
+                            <div class="pay-method-card" id="pay-card-card" onclick="Orders.selectPaymentMethod('Credit Card')" style="cursor: pointer; border: 2px solid var(--border-color); background: #fff; padding: 1rem 0.5rem; border-radius: var(--radius-md); text-align: center; transition: all 0.2s ease;">
+                                <input type="radio" name="payment-method-choice" id="pay-radio-card" value="Credit Card" style="display: none;">
+                                <i class="fas fa-credit-card fa-2x" style="color: var(--secondary); margin-bottom: 0.5rem; display: block;"></i>
+                                <strong style="display: block; font-size: 0.85rem; color: var(--primary);">Credit / Debit Card</strong>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">Visa, MasterCard</span>
+                            </div>
+                        </div>
+
+                        <!-- SUB-PANEL: CASH ON DELIVERY -->
+                        <div id="panel-pay-cod" style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 0.8rem;">
+                                <i class="fas fa-truck fa-2x" style="color: var(--secondary);"></i>
+                                <div>
+                                    <strong style="color: var(--primary); display: block;">Pay upon Delivery (Zero Advance Payment)</strong>
+                                    <span style="font-size: 0.85rem; color: var(--text-muted);">You can pay via Cash or any UPI QR scan at your doorstep when the delivery partner arrives.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUB-PANEL: UPI / QR -->
+                        <div id="panel-pay-upi" style="display: none; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <label for="checkout-upi-id" style="font-weight: 600; font-size: 0.85rem; color: var(--primary); margin: 0;">
+                                    <i class="fas fa-mobile-alt"></i> Enter UPI ID (VPA)
+                                </label>
+                                <button type="button" class="btn btn-sm btn-outline" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;" onclick="Orders.fillDemoUPI()">
+                                    <i class="fas fa-magic"></i> Demo UPI Quick-Fill
+                                </button>
+                            </div>
+                            <input type="text" id="checkout-upi-id" class="form-control" placeholder="e.g. rahul@okhdfcbank or 9876543210@paytm" style="margin-bottom: 0.8rem;">
+                            <div style="background: #fff; padding: 0.8rem; border-radius: var(--radius-sm); border: 1px dashed var(--secondary); font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.6rem;">
+                                <i class="fas fa-shield-alt" style="color: var(--secondary); font-size: 1.2rem;"></i>
+                                <span>Demo Mode: Seamless instant verification enabled for academic Viva demonstration.</span>
+                            </div>
+                        </div>
+
+                        <!-- SUB-PANEL: CREDIT / DEBIT CARD -->
+                        <div id="panel-pay-card" style="display: none; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1.2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <span style="font-weight: 600; font-size: 0.85rem; color: var(--primary);">
+                                    <i class="fas fa-credit-card"></i> Card Details (Demo Simulation)
+                                </span>
+                                <button type="button" class="btn btn-sm btn-outline" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;" onclick="Orders.fillDemoCard()">
+                                    <i class="fas fa-magic"></i> Demo Card Quick-Fill
+                                </button>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0.8rem;">
+                                <label style="font-size: 0.8rem;">Cardholder Name</label>
+                                <input type="text" id="checkout-card-name" class="form-control" placeholder="Rahul Sharma">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0.8rem;">
+                                <label style="font-size: 0.8rem;">Card Number</label>
+                                <div style="position: relative;">
+                                    <input type="text" id="checkout-card-number" class="form-control" maxlength="19" placeholder="4532 8920 1145 8899" style="letter-spacing: 1.5px;">
+                                    <i class="fab fa-cc-visa" style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-size: 1.2rem;"></i>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.8rem;">Expiry (MM/YY)</label>
+                                    <input type="text" id="checkout-card-expiry" class="form-control" maxlength="5" placeholder="12/28">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.8rem;">CVV</label>
+                                    <input type="password" id="checkout-card-cvv" class="form-control" maxlength="4" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block" style="padding: 0.8rem; font-size: 1.05rem;">
-                        <i class="fas fa-check-circle"></i> CONFIRM ORDER
+                    <button type="submit" class="btn btn-primary btn-block" style="padding: 0.8rem; font-size: 1.05rem; margin-top: 1rem;">
+                        <i class="fas fa-check-circle"></i> Confirm & Place Order
                     </button>
                 </form>
             </div>
@@ -83,6 +173,11 @@
                     </h3>
                     <div id="checkout-items-summary" style="margin-bottom: 1rem; max-height: 250px; overflow-y: auto;">
                         <p style="color: var(--text-muted);">Loading items...</p>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Payment Method:</span>
+                        <strong id="summary-payment-method-badge" style="color: var(--primary);">Cash on Delivery</strong>
                     </div>
 
                     <div class="summary-row">
@@ -103,7 +198,7 @@
     <div class="modal-backdrop" id="order-success-modal">
         <div class="modal-card" style="text-align: center;">
             <div class="modal-header" style="background: var(--success); justify-content: center;">
-                <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem; color: #fff;">
                     <i class="fas fa-check-circle"></i> ORDER SUCCESSFUL
                 </h3>
             </div>
@@ -113,24 +208,27 @@
                 </div>
                 <h2>Thank you for your order!</h2>
                 <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                    Your multi-seller order has been saved in the database and product stock has been deducted.
+                    Your multi-seller order has been confirmed and saved in the SQLite database.
                 </p>
 
                 <div style="background: var(--input-bg); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-                    <span style="font-size: 0.85rem; color: var(--text-muted);">UNIQUE ORDER ID:</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">ORDER IDENTIFIER:</span>
                     <div id="success-order-code" style="font-size: 1.8rem; font-weight: 900; color: var(--primary); letter-spacing: 1px;">
                         PRC10001
                     </div>
                     <div id="success-order-amount" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary); margin-top: 0.3rem;">
                         ₹0
                     </div>
+                    <div style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-dark);">
+                        Payment Mode: <strong id="success-order-payment" style="color: var(--primary);">Cash on Delivery</strong>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <a href="/orders.html" class="btn btn-primary">
+                    <a href="orders.html" class="btn btn-primary">
                         <i class="fas fa-clipboard-list"></i> View My Orders
                     </a>
-                    <a href="/products.html" class="btn btn-outline">
+                    <a href="products.html" class="btn btn-outline">
                         Continue Shopping
                     </a>
                 </div>
@@ -145,10 +243,10 @@
         </div>
     </footer>
 
-    <script src="/js/api.js"></script>
-    <script src="/js/auth.js"></script>
-    <script src="/js/orders.js"></script>
-    <script src="/js/chatbot.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/chatbot.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             Orders.initCheckout();

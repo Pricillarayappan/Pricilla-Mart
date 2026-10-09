@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricilla Mart - Multi Seller Online Shopping</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="/index.html" class="brand-logo">
+            <a href="index.html" class="brand-logo">
                 <span class="brand-title">PRICILLA</span>
                 <span class="brand-subtitle">MART</span>
             </a>
@@ -26,15 +27,15 @@
             </button>
 
             <ul class="nav-links">
-                <li><a href="/index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Products</a></li>
                 <li>
-                    <a href="/cart.html" style="position: relative;">
+                    <a href="cart.html" style="position: relative;">
                         <i class="fas fa-shopping-cart"></i> Cart
                         <span class="badge cart-count-badge">0</span>
                     </a>
                 </li>
-                <li><a href="/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                <li><a href="orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
                 <li id="nav-auth-container" style="display: flex; align-items: center; gap: 0.8rem;">
                     <!-- Injected via auth.js -->
                 </li>
@@ -45,7 +46,7 @@
     <!-- MAIN BODY -->
     <main class="main-content">
         <!-- HERO BANNER -->
-        <section class="hero">
+        <section class="hero-section">
             <div class="hero-content">
                 <span class="hero-tag"><i class="fas fa-award"></i> COLLEGE CAPSTONE PROJECT 2026</span>
                 <h1 class="hero-title">Experience Smarter Multi-Seller Shopping</h1>
@@ -53,8 +54,8 @@
                     Discover thousands of handpicked gadgets, trendy fashion, and home lifestyle products from verified multi-vendor storefronts.
                 </p>
                 <div class="hero-actions">
-                    <a href="/products.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Explore Catalog</a>
-                    <a href="/register.html" class="btn btn-secondary"><i class="fas fa-store"></i> Become a Seller</a>
+                    <a href="products.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Explore Catalog</a>
+                    <a href="register.html" class="btn btn-secondary"><i class="fas fa-store"></i> Become a Seller</a>
                 </div>
             </div>
             <div class="hero-stats">
@@ -64,7 +65,7 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">100%</div>
-                    <div class="stat-label">C++ Backend</div>
+                    <div class="stat-label">Java & SQL Backend</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number">AI</div>
@@ -108,7 +109,7 @@
         <!-- CATEGORIES FILTER SECTION -->
         <div class="section-header">
             <h2 class="section-title">Shop by Category</h2>
-            <a href="/products.html" style="font-weight: 600; font-size: 0.95rem;">View All <i class="fas fa-arrow-right"></i></a>
+            <a href="products.html" style="font-weight: 600; font-size: 0.95rem;">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="category-chips" id="category-chips-container">
             <!-- Loaded dynamically via products.js -->
@@ -136,31 +137,31 @@
                     Pricilla Mart is a full-stack multi-seller online shopping marketplace built for the final Year College Capstone Project.
                 </p>
                 <p style="font-size: 0.8rem; color: var(--light);">
-                    <i class="fas fa-code"></i> Powered by C++20, Drogon Framework REST APIs, SQLite3, and Vanilla JavaScript.
+                    <i class="fas fa-code"></i> Powered by Java Spring Boot 3 REST APIs, SQLite3, and Responsive UI.
                 </p>
             </div>
             <div class="footer-col">
-                <h4>Quick Links</h4>
+                <h4>Customer Service</h4>
                 <ul>
-                    <li><a href="/index.html">Home</a></li>
-                    <li><a href="/products.html">All Products</a></li>
-                    <li><a href="/cart.html">Shopping Cart</a></li>
-                    <li><a href="/orders.html">Track Orders</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">All Products</a></li>
+                    <li><a href="cart.html">Shopping Cart</a></li>
+                    <li><a href="orders.html">Track Orders</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>User Hub</h4>
                 <ul>
-                    <li><a href="/login.html">Buyer Login</a></li>
-                    <li><a href="/register.html">Seller Registration</a></li>
-                    <li><a href="/seller/dashboard.html">Seller Portal</a></li>
-                    <li><a href="/admin/dashboard.html">Admin Dashboard</a></li>
+                    <li><a href="login.html">Buyer Login</a></li>
+                    <li><a href="register.html">Seller Registration</a></li>
+                    <li><a href="seller/dashboard.html">Seller Portal</a></li>
+                    <li><a href="admin/dashboard.html">Admin Dashboard</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>College Capstone</h4>
                 <p>Course: CSE Final Capstone</p>
-                <p>Architecture: C++ Full-Stack</p>
+                <p>Architecture: Java Full-Stack</p>
                 <p>Brand Palette: Midnight Orchid & Dusky Lilac</p>
             </div>
         </div>
@@ -170,11 +171,11 @@
     </footer>
 
     <!-- SCRIPTS -->
-    <script src="/js/api.js"></script>
-    <script src="/js/auth.js"></script>
-    <script src="/js/cart.js"></script>
-    <script src="/js/products.js"></script>
-    <script src="/js/chatbot.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/chatbot.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             Products.loadCategories();

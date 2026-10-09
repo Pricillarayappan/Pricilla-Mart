@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Pricilla Mart</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <!-- NAVBAR --!>
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="/index.html" class="brand-logo">
+            <a href="index.html" class="brand-logo">
                 <span class="brand-title">PRICILLA</span>
                 <span class="brand-subtitle">MART</span>
             </a>
 
             <ul class="nav-links">
-                <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/products.html"><i class="fas fa-box"></i> Products</a></li>
-                <li><a href="/cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                <li><a href="/orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                <li><a href="orders.html"><i class="fas fa-receipt"></i> Orders</a></li>
                 <li id="nav-auth-container"></li>
             </ul>
         </div>
@@ -71,14 +72,14 @@
         </div>
     </footer>
 
-    <script src="/js/api.js"></script>
-    <script src="/js/auth.js"></script>
-    <script src="/js/chatbot.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const user = API.getUser();
             if (!user) {
-                window.location.href = '/login.html';
+                window.location.href = (typeof Auth !== 'undefined' ? Auth.getPath('login.html') : 'login.html');
                 return;
             }
 
@@ -91,19 +92,19 @@
             const actionsDiv = document.getElementById('profile-role-actions');
             if (user.role === 'admin') {
                 actionsDiv.innerHTML = `
-                    <a href="/admin/dashboard.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                    <a href="${typeof Auth !== 'undefined' ? Auth.getPath('admin/dashboard.html') : 'admin/dashboard.html'}" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
                         <i class="fas fa-shield-alt"></i> Enter Admin Control Center
                     </a>
                 `;
             } else if (user.role === 'seller') {
                 actionsDiv.innerHTML = `
-                    <a href="/seller/dashboard.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                    <a href="${typeof Auth !== 'undefined' ? Auth.getPath('seller/dashboard.html') : 'seller/dashboard.html'}" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
                         <i class="fas fa-store"></i> Open Seller Dashboard
                     </a>
                 `;
             } else {
                 actionsDiv.innerHTML = `
-                    <a href="/orders.html" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
+                    <a href="${typeof Auth !== 'undefined' ? Auth.getPath('orders.html') : 'orders.html'}" class="btn btn-primary btn-block" style="margin-bottom: 0.8rem;">
                         <i class="fas fa-clipboard-list"></i> View My Order History
                     </a>
                 `;

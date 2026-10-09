@@ -64,7 +64,7 @@ public:
 
     static TokenPayload verifyToken(const std::string& token, const std::string& secret) {
         TokenPayload result;
-        size_t dotPos = token.find('.');
+        size_t dotPos = token.rfind('.');
         if (dotPos == std::string::npos) return result;
 
         std::string encodedPayload = token.substr(0, dotPos);

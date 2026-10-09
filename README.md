@@ -1,6 +1,6 @@
 # PRICILLA MART
 ### Multi-Seller Online Shopping E-Commerce Platform
-**Final Year College Capstone Project**
+**Final Year College Capstone Project — Java Full-Stack**
 
 ---
 
@@ -8,13 +8,13 @@
 
 **PRICILLA MART** is a complete, fully functional, multi-seller online shopping e-commerce web platform engineered for a **College Computer Science & Engineering Capstone Project**.
 
-Unlike conventional prototype projects that rely on Node.js or Python, the core backend of Pricilla Mart is built in **Modern C++20**, following the high-performance **Drogon Framework RESTful architecture** coupled with an **SQLite3 relational database**. The client frontend is implemented in responsive **HTML5, CSS3, and JavaScript**, styled with an exclusive, luxurious **purple and lilac reference color palette**.
+The platform is built using a modern **Java Full-Stack architecture (Java 17+ / Spring Boot 3 & Maven)** coupled with an **SQLite3 relational database** and a responsive **HTML5/CSS3/JavaScript frontend** adhering to an elegant **purple and lilac reference color palette**.
 
 ---
 
 ## 🎨 Color Palette & Branding
 
-All pages, dashboards, modals, and elements strictly adhere to the designated purple/lilac brand palette:
+All 17 pages, dashboards, modals, and elements strictly adhere to the designated purple/lilac brand palette:
 
 | Element | Color Name | HEX Code | Purpose |
 |---|---|---|---|
@@ -41,8 +41,8 @@ All pages, dashboards, modals, and elements strictly adhere to the designated pu
 - **Faceted Category Filtering:** Instant category chips for Electronics, Fashion, Accessories, Home, Beauty, and Books.
 - **Product Details:** High-resolution product images, seller information, available stock count, and average star ratings.
 - **Dynamic Shopping Cart:** Add items, increment/decrement quantities, automatic stock-cap validation, and real-time subtotal calculation.
-- **Checkout:** Delivery address input, order summary breakdown, atomic inventory deduction, and unique Order ID generation (e.g., `PRC10001`).
-- **Order History & Tracking:** Interactive shipment lifecycle timeline (`Pending` → `Confirmed` → `Shipped` → `Delivered` or `Cancelled`).
+- **Checkout & Multi-Mode Payments:** Delivery address input, payment method selection (**Cash on Delivery**, **Demo UPI / QR Code**, **Demo Credit/Debit Card** with 1-click quick-fill helpers), atomic inventory deduction, and unique Order ID generation (e.g., `PRC10001`).
+- **Order History & Tracking:** Interactive shipment lifecycle timeline (`Pending` → `Confirmed` → `Shipped` → `Delivered` or `Cancelled`) with payment method badge.
 - **Product Reviews & Ratings:** 1-to-5 star interactive picker and verified customer reviews.
 
 ### 3. Seller Module
@@ -66,9 +66,9 @@ All pages, dashboards, modals, and elements strictly adhere to the designated pu
 
 ## 🛠️ Technology Stack
 
-- **Backend:** C++20 (Standard C++20, multithreaded HTTP REST routing, Drogon MVC controller design)
-- **Database:** SQLite3 (Relational database with foreign key constraints, indexes, and transactions)
-- **Build System:** CMake (Version 3.15+)
+- **Backend:** Java 17+, Spring Boot 3 (Spring Web, Embedded Tomcat, Spring MVC REST)
+- **Database:** SQLite3 (`database/pricillamart.db`) via `sqlite-jdbc` with foreign keys, indexes, and transactions
+- **Build System:** Maven (`pom.xml`)
 - **Frontend:** HTML5, CSS3, Modern JavaScript (Fetch API, Async/Await)
 - **Security:** SHA-256 cryptographic password hashing, Base64URL-encoded HMAC token validation
 
@@ -77,81 +77,66 @@ All pages, dashboards, modals, and elements strictly adhere to the designated pu
 ## 📁 Project Directory Structure
 
 ```
-PricillaMart/
-├── CMakeLists.txt              # Root CMake build configuration
-├── README.md                   # Project documentation & viva guide
-├── .gitignore                  # Git ignore rules (builds, databases, envs)
-├── .env.example                # Environment variable template
+Pricilla/
+├── pom.xml                                   # Maven build configuration
+├── start_server.bat                          # 1-click Windows server launcher
+├── PricillaMartServer.java                   # Standalone Java HTTP server runner
+├── dev_server.py                             # Python local preview runner
+├── README.md                                 # Complete documentation
 │
 ├── database/
-│   ├── schema.sql              # Relational SQLite database schema
-│   ├── seed.sql                # Pre-populated demonstration data
-│   └── init_db.py              # Quick Python SQLite initialization script
+│   ├── schema.sql                            # Relational SQLite database schema
+│   ├── seed.sql                              # Pre-populated demonstration data
+│   ├── init_db.py                            # Database initialization script
+│   └── pricillamart.db                       # Pre-populated SQLite3 database
 │
-├── backend/
-│   ├── main.cpp                # Self-contained C++20 REST server entry point
-│   ├── drogon_main.cpp         # Drogon framework C++ entry point
+├── src/main/java/com/pricillamart/
+│   ├── PricillaMartApplication.java          # Spring Boot main entry point
 │   ├── config/
-│   │   ├── AppConfig.h         # Configuration loader
-│   │   └── config.json         # Drogon server settings
-│   ├── database/
-│   │   ├── DatabaseManager.h   # SQLite3 database manager header
-│   │   └── DatabaseManager.cpp # Database operations and transactions
+│   │   └── WebConfig.java                    # Static files & CORS configuration
 │   ├── models/
-│   │   ├── User.h              # User model
-│   │   ├── Product.h           # Product model
-│   │   ├── Category.h          # Category model
-│   │   ├── CartItem.h          # Cart item model
-│   │   ├── Order.h             # Order model
-│   │   └── Review.h            # Review model
+│   │   ├── User.java, Product.java, Category.java
+│   │   ├── CartItem.java, Order.java, OrderItem.java, Review.java
+│   │   └── Review.java
+│   ├── services/
+│   │   ├── DatabaseService.java              # Thread-safe SQLite CRUD & transactions
+│   │   ├── AuthService.java                  # User registration & login logic
+│   │   └── ChatbotService.java              # Contextual AI assistant logic
 │   ├── controllers/
-│   │   ├── AuthController.h / .cpp       # User registration & login
-│   │   ├── ProductController.h / .cpp    # Catalog & search
-│   │   ├── CategoryController.h / .cpp   # Category hierarchy
-│   │   ├── CartController.h / .cpp       # Shopping cart operations
-│   │   ├── OrderController.h / .cpp      # Checkout & orders
-│   │   ├── ReviewController.h / .cpp     # Reviews & ratings
-│   │   ├── AdminController.h / .cpp      # Admin & seller analytics
-│   │   └── ChatbotController.h / .cpp    # AI Chatbot engine
+│   │   ├── AuthController.java               # /api/register, /api/login, /api/profile
+│   │   ├── ProductController.java            # /api/products, search & CRUD
+│   │   ├── CategoryController.java           # /api/categories
+│   │   ├── CartController.java               # /api/cart operations
+│   │   ├── OrderController.java              # /api/orders & checkout
+│   │   ├── ReviewController.java             # /api/reviews & ratings
+│   │   ├── AdminController.java              # /api/admin/stats, /api/admin/users
+│   │   └── ChatbotController.java            # /api/chatbot
 │   └── utils/
-│       ├── PasswordHasher.h / .cpp       # SHA-256 hashing
-│       ├── JwtUtil.h                     # Token generation & validation
-│       └── ResponseUtil.h                # JSON formatting helpers
+│       ├── ApiResponse.java                  # Standard JSON envelope
+│       ├── PasswordUtil.java                 # SHA-256 hashing
+│       └── JwtUtil.java                      # JWT token generator & validator
+│
+├── src/main/resources/
+│   └── application.properties                # Spring Boot configuration
 │
 ├── frontend/
-│   ├── index.html              # Homepage
-│   ├── login.html              # Login page with demo one-click buttons
-│   ├── register.html           # User registration (Buyer / Seller)
-│   ├── products.html           # Product catalog with search & filters
-│   ├── product-details.html    # Product specifications & reviews
-│   ├── cart.html               # Shopping cart & subtotal summary
-│   ├── checkout.html           # Shipping address & order confirmation
-│   ├── orders.html             # Order history & tracking timeline
-│   ├── profile.html            # User account profile
-│   ├── 404.html                # Not found fallback page
-│   ├── seller/
-│   │   ├── dashboard.html      # Seller dashboard with KPI stats
-│   │   ├── products.html       # Seller inventory manager
-│   │   └── orders.html         # Seller received orders manager
-│   ├── admin/
-│   │   ├── dashboard.html      # Admin KPI control center
-│   │   ├── users.html          # Admin user directory & role filter
-│   │   ├── products.html       # Admin global product moderation
-│   │   └── orders.html         # Admin platform-wide order audit
-│   ├── css/
-│   │   └── style.css           # Official purple/lilac stylesheet
-│   └── js/
-│       ├── api.js              # REST client wrapper
-│       ├── auth.js             # Authentication & session state
-│       ├── products.js         # Product listing & search
-│       ├── cart.js             # Shopping cart operations
-│       ├── orders.js           # Orders & checkout operations
-│       ├── reviews.js          # Product reviews & star rating
-│       ├── chatbot.js          # AI Chatbot floating widget
-│       └── dashboard.js        # Seller & admin dashboard operations
+│   ├── index.html                            # Homepage (Hero, categories, products)
+│   ├── login.html                            # Login page with 1-click viva demo buttons
+│   ├── register.html                         # Registration (Buyer / Seller)
+│   ├── products.html                         # Catalog with search & filters
+│   ├── product-details.html                  # Product details & reviews
+│   ├── cart.html                             # Shopping cart
+│   ├── checkout.html                         # Checkout form & order success modal
+│   ├── orders.html                           # Order history & tracking
+│   ├── profile.html                          # User account profile
+│   ├── 404.html                              # Not found fallback
+│   ├── seller/                               # Seller Hub (Dashboard, Products, Orders)
+│   ├── admin/                                # Admin Panel (Dashboard, Users, Products, Orders)
+│   ├── css/style.css                         # Official purple/lilac stylesheet
+│   └── js/                                   # Frontend modules (api, auth, products, cart, etc.)
 │
 └── docs/
-    └── project-documentation.md # Detailed Capstone Project Report & viva guide
+    └── project-documentation.md              # Detailed Capstone Project Report & viva guide
 ```
 
 ---
@@ -170,42 +155,39 @@ For quick professor examination, evaluation, and live demonstration, pre-seeded 
 
 ---
 
-## ⚙️ Setup & Execution Instructions
+## 🚀 How to Run the Server & Open Localhost
 
-### Option 1: Database Initialization
-Before starting the backend, initialize the SQLite database using Python (built-in SQLite module):
-```bash
-python database/init_db.py
+### Method 1: Instant 1-Click Launcher (Windows)
+Double-click **`start_server.bat`** or run:
+```cmd
+start_server.bat
 ```
-*Note: The C++ backend also verifies and seeds the database automatically on startup if `database/pricillamart.db` is not present.*
-
-### Option 2: Build with CMake & C++ Compiler
-```bash
-# Generate build configuration
-cmake -S . -B build
-
-# Compile project executable
-cmake --build build --config Release
-
-# Run Pricilla Mart
-./build/bin/pricillamart_server
-```
-
-### Option 3: Direct Compilation (GCC / Clang / MSVC)
-On Windows with MinGW/GCC:
-```bash
-g++ -std=c++20 backend/main.cpp backend/database/DatabaseManager.cpp backend/utils/PasswordHasher.cpp backend/controllers/*.cpp -Ibackend -lsqlite3 -lws2_32 -o pricillamart_server.exe
-./pricillamart_server.exe
-```
-
-On Linux / macOS:
-```bash
-g++ -std=c++20 backend/main.cpp backend/database/DatabaseManager.cpp backend/utils/PasswordHasher.cpp backend/controllers/*.cpp -Ibackend -lsqlite3 -lpthread -o pricillamart_server
-./pricillamart_server
-```
-
-Once running, open your web browser at:
+Then open your web browser at:
 👉 **`http://localhost:8080`**
+
+### Method 2: Standalone Java Server
+If Java is installed on your machine:
+```cmd
+java PricillaMartServer.java
+```
+Open **`http://localhost:8080`** in your browser.
+
+### Method 3: Spring Boot with Maven
+```cmd
+mvn spring-boot:run
+```
+Or package into an executable JAR:
+```cmd
+mvn clean package
+java -jar target/pricillamart-1.0.0.jar
+```
+Open **`http://localhost:8080`** in your browser.
+
+### Method 4: Python Dev Server
+```cmd
+python dev_server.py
+```
+Open **`http://localhost:8080`** in your browser.
 
 ---
 

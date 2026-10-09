@@ -41,10 +41,10 @@ INSERT OR IGNORE INTO products (id, name, description, category_id, price, stock
 (9, 'Data Structures & Algorithms in C++', 'Comprehensive academic master reference textbook covering dynamic programming, graph theory, trees, time complexity, and competitive programming problems.', 6, 699.00, 45, 'https://images.unsplash.com/photo-1532012164546-f432f2e37271?w=600&auto=format&fit=crop&q=80', 2);
 
 -- 4. INSERT SAMPLE ORDERS
-INSERT OR IGNORE INTO orders (id, order_code, buyer_id, total_amount, buyer_name, email, phone, delivery_address, status, created_at) VALUES
-(1, 'PRC10001', 4, 1999.00, 'Rahul Sharma', 'rahul@gmail.com', '+91 9876543213', '42 MG Road, Koramangala 4th Block, Bengaluru, Karnataka 560034', 'Delivered', datetime('now', '-5 days')),
-(2, 'PRC10002', 5, 45999.00, 'Priya Patel', 'priya@gmail.com', '+91 9876543214', '78 Heritage Park, Satellite, Ahmedabad, Gujarat 380015', 'Shipped', datetime('now', '-2 days')),
-(3, 'PRC10003', 6, 1499.00, 'John Doe', 'john@gmail.com', '+91 9876543215', '12 Lakeview Avenue, Powai, Mumbai, Maharashtra 400076', 'Confirmed', datetime('now', '-1 hours'));
+INSERT OR IGNORE INTO orders (id, order_code, buyer_id, total_amount, buyer_name, email, phone, delivery_address, payment_method, status, created_at) VALUES
+(1, 'PRC10001', 4, 1999.00, 'Rahul Sharma', 'rahul@gmail.com', '+91 9876543213', '42 MG Road, Koramangala 4th Block, Bengaluru, Karnataka 560034', 'UPI', 'Delivered', datetime('now', '-5 days')),
+(2, 'PRC10002', 5, 45999.00, 'Priya Patel', 'priya@gmail.com', '+91 9876543214', '78 Heritage Park, Satellite, Ahmedabad, Gujarat 380015', 'Credit Card', 'Shipped', datetime('now', '-2 days')),
+(3, 'PRC10003', 6, 1499.00, 'John Doe', 'john@gmail.com', '+91 9876543215', '12 Lakeview Avenue, Powai, Mumbai, Maharashtra 400076', 'Cash on Delivery', 'Confirmed', datetime('now', '-1 hours'));
 
 -- 5. INSERT SAMPLE ORDER ITEMS
 INSERT OR IGNORE INTO order_items (id, order_id, product_id, seller_id, quantity, unit_price, subtotal) VALUES

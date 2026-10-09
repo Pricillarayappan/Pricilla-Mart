@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS orders (
     email TEXT NOT NULL,
     phone TEXT NOT NULL,
     delivery_address TEXT NOT NULL,
+    payment_method TEXT NOT NULL DEFAULT 'Cash on Delivery',
     status TEXT NOT NULL DEFAULT 'Pending' CHECK(status IN ('Pending', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE

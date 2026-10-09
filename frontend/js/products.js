@@ -79,9 +79,10 @@ const Products = {
     renderProductCard(p) {
         const isOutOfStock = p.stockQuantity <= 0;
         const stars = '★'.repeat(Math.round(p.averageRating || 5)) + '☆'.repeat(5 - Math.round(p.averageRating || 5));
+        const targetUrl = `${typeof Auth !== 'undefined' ? Auth.getPath('product-details.html') : 'product-details.html'}?id=${p.id}`;
 
         return `
-            <div class="product-card" onclick="window.location.href='/product-details.html?id=${p.id}'" style="cursor: pointer;">
+            <div class="product-card" onclick="window.location.href='${targetUrl}'" style="cursor: pointer;">
                 <div class="product-image-wrap">
                     <img src="${p.imageUrl}" alt="${p.name}" class="product-image" onerror="this.src='https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&auto=format&fit=crop&q=80'">
                     <span class="category-tag">${p.categoryName}</span>
@@ -113,7 +114,7 @@ const Products = {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         if (!productId) {
-            window.location.href = '/products.html';
+            window.location.href = (typeof Auth !== 'undefined' ? Auth.getPath('products.html') : 'products.html');
             return;
         }
 
@@ -199,7 +200,9 @@ const Products = {
                 });
 
                 // Load reviews
-                Reviews.loadProductReviews(p.id);
+                if (typeof Reviews !== 'undefined') {
+                    Reviews.loadProductReviews(p.id);
+                }
             }
         } catch (err) {
             container.innerHTML = `<p style="color: var(--error);">Error loading product details: ${err.message}</p>`;
@@ -213,9 +216,10 @@ const Products = {
                 if (e.key === 'Enter') {
                     const q = searchInput.value.trim();
                     if (window.location.pathname.includes('products.html')) {
-                        Products.loadProducts({ q });
+                        Products.loadProducts({ search: q });
                     } else {
-                        window.location.href = `/products.html?q=${encodeURIComponent(q)}`;
+                        const target = `${typeof Auth !== 'undefined' ? Auth.getPath('products.html') : 'products.html'}?q=${encodeURIComponent(q)}`;
+                        window.location.href = target;
                     }
                 }
             });

@@ -2,27 +2,29 @@
 
 **Course:** B.Tech / B.E. Computer Science and Engineering  
 **Project Title:** PRICILLA MART - Multi-Seller Online Shopping E-Commerce Platform  
-**Architecture:** Modern C++20 Full-Stack with Relational SQLite3 Database & Responsive Vanilla Web Architecture  
+**Architecture:** Java 17+ Full-Stack (Spring Boot 3 REST APIs) with Relational SQLite3 Database & Responsive Vanilla Web Architecture  
 
 ---
 
 ## 1. Abstract
 
-**Pricilla Mart** is an individual, end-to-end multi-seller e-commerce web platform engineered using **C++20**, **Drogon Framework RESTful architectural principles**, an **SQLite3 relational database engine**, and a responsive **HTML5/CSS3/JavaScript frontend**. The system empowers three distinct user roles—**Buyers**, **Multi-Store Sellers**, and **Administrators**—facilitating independent vendor storefront management, dynamic keyword search, category-based faceted filtering, real-time transactional cart calculations, inventory decrement on checkout, persistent order fulfillment workflows, verified customer product reviews, and an interactive **AI Shopping Assistant Chatbot**.
+**Pricilla Mart** is an individual, end-to-end multi-seller e-commerce web platform engineered using **Java 17+**, **Spring Boot 3 RESTful architecture**, an **SQLite3 relational database engine**, and a responsive **HTML5/CSS3/JavaScript frontend**. The system empowers three distinct user roles—**Buyers**, **Multi-Store Sellers**, and **Administrators**—facilitating independent vendor storefront management, dynamic keyword search, category-based faceted filtering, real-time transactional cart calculations, inventory decrement on checkout, persistent order fulfillment workflows, verified customer product reviews, and an interactive **AI Shopping Assistant Chatbot**.
 
 ---
 
 ## 2. Technology Stack & Design Decisions
 
-### 2.1 Backend Layer (C++20)
-- **Language Standard:** C++20 (`-std=c++20` or `/std:c++20`).
-- **REST Engine:** High-performance asynchronous RESTful HTTP server architecture adhering to Drogon MVC controller paradigms.
-- **Data Serialization:** Standardized JSON protocol with rigorous validation, sanitization, and automated escaping for security.
-- **Cryptographic Security:** Custom self-contained SHA-256 password hashing and Base64URL-encoded HMAC token validation for stateless session protection.
+### 2.1 Backend Layer (Java 17+ / Spring Boot 3)
+- **Language Standard:** Java 17+ (LTS).
+- **Framework:** Spring Boot 3 (Spring Web MVC, Embedded Apache Tomcat on port 8080).
+- **Build System:** Apache Maven (`pom.xml`).
+- **Data Serialization:** Jackson JSON library with standardized API responses (`ApiResponse<T>`).
+- **Cryptographic Security:** Custom SHA-256 password hashing (`PasswordUtil.java`) and Base64URL-encoded HMAC token validation (`JwtUtil.java`) for stateless session protection.
 
-### 2.2 Database Layer (SQLite3)
+### 2.2 Database Layer (SQLite3 via JDBC)
 - **Engine:** SQLite3 with `PRAGMA foreign_keys = ON;` and index acceleration.
-- **Concurrency & Integrity:** Atomic multi-statement transactions (`BEGIN TRANSACTION; ... COMMIT;`) preventing race conditions during simultaneous stock reduction during checkout.
+- **Connectivity:** `sqlite-jdbc` with connection pooling and thread-safe statement execution.
+- **Concurrency & Integrity:** Atomic multi-statement transactions (`conn.setAutoCommit(false); ... conn.commit();`) preventing race conditions during simultaneous stock reduction during checkout.
 
 ### 2.3 Frontend Presentation Layer
 - **Standard:** Semantic HTML5, Vanilla JavaScript (ES6+ async/await Fetch API), and pure custom CSS3.
@@ -32,6 +34,7 @@
   - **Iris Mist (`#BAB0C8`):** Input borders, soft accents, and badges.
   - **Plum Blossom (`#D7C5D2`):** Cards, modals, and container backgrounds.
   - **Silver Wisteria (`#DAD4DF`):** Primary body and table canvas background.
+  - **Pale Lavender (`#F5F2F7`):** Form inputs and search bar.
 
 ---
 
@@ -48,7 +51,7 @@ users (id, name, email [UQ], phone, password_hash, role, created_at)
   │     │
   │     └── reviews (id, product_id, buyer_id, rating [1-5], comment, created_at)
   │
-  └── orders (id, order_code [UQ], buyer_id, total_amount, buyer_name, email, phone, delivery_address, status, created_at)
+  └── orders (id, order_code [UQ], buyer_id, total_amount, buyer_name, email, phone, delivery_address, payment_method, status, created_at)
 ```
 
 ---
@@ -136,6 +139,8 @@ When presenting **Pricilla Mart** to professors, external examiners, or evaluati
 
 ---
 
-## 6. Conclusion
+## 6. How to Run the Application Locally
 
-Pricilla Mart satisfies all mandatory Capstone specifications for a multi-seller online shopping marketplace. By uniting C++20 backend performance, atomic relational integrity in SQLite3, and a modern responsive user interface, the project provides a benchmark architecture for academic evaluation and real-world software engineering portfolios.
+1. **Double-click `start_server.bat`** (or run `java PricillaMartServer.java` / `mvn spring-boot:run` / `python dev_server.py`).
+2. Open **`http://localhost:8080`** in your browser.
+3. Login using the one-click demo credentials and explore all modules!

@@ -47,7 +47,8 @@ const Reviews = {
         try {
             const res = await API.get(`/products/${productId}/reviews`);
             if (res.success && res.data) {
-                const { reviews, averageRating, reviewCount } = res.data;
+                const reviews = Array.isArray(res.data) ? res.data : (res.data.reviews || []);
+                const reviewCount = res.data.reviewCount !== undefined ? res.data.reviewCount : reviews.length;
 
                 const countEl = document.getElementById('reviews-count-badge');
                 if (countEl) countEl.innerText = `${reviewCount} Reviews`;
@@ -89,7 +90,9 @@ const Reviews = {
         const user = API.getUser();
         if (!user) {
             API.showToast('Please log in to submit a review.', 'info');
-            setTimeout(() => { window.location.href = '/login.html'; }, 800);
+            setTimeout(() => {
+                window.location.href = (typeof Auth !== 'undefined' ? Auth.getPath('login.html') : 'login.html');
+            }, 800);
             return;
         }
 

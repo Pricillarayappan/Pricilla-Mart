@@ -8,20 +8,13 @@ const Auth = {
     // GET CORRECT FRONTEND PATH
     // ============================================
     getPath(path) {
-
-        const currentPath = window.location.pathname;
-
-        // If current page is inside seller folder
-        if (currentPath.includes('/seller/')) {
+        const full = (window.location.pathname || '') + ' ' + (window.location.href || '');
+        if (full.includes('/seller/') || full.includes('\\seller\\') || full.includes('%5Cseller%5C') || full.includes('%2Fseller%2F')) {
             return '../' + path;
         }
-
-        // If current page is inside admin folder
-        if (currentPath.includes('/admin/')) {
+        if (full.includes('/admin/') || full.includes('\\admin\\') || full.includes('%5Cadmin%5C') || full.includes('%2Fadmin%2F')) {
             return '../' + path;
         }
-
-        // Root frontend pages
         return path;
     },
 
@@ -227,39 +220,13 @@ const Auth = {
 
                             // ROLE BASED REDIRECTION
                             setTimeout(() => {
-
-                                if (
-                                    res.data.user.role ===
-                                    'admin'
-                                ) {
-
-                                    window.location.href =
-                                        this.getPath(
-                                            'admin/dashboard.html'
-                                        );
-
+                                if (res.data.user.role === 'admin') {
+                                    window.location.href = Auth.getPath('admin/dashboard.html');
+                                } else if (res.data.user.role === 'seller') {
+                                    window.location.href = Auth.getPath('seller/dashboard.html');
+                                } else {
+                                    window.location.href = Auth.getPath('index.html');
                                 }
-
-                                else if (
-                                    res.data.user.role ===
-                                    'seller'
-                                ) {
-
-                                    window.location.href =
-                                        this.getPath(
-                                            'seller/dashboard.html'
-                                        );
-
-                                }
-
-                                else {
-
-                                    window.location.href =
-                                        this.getPath(
-                                            'index.html'
-                                        );
-                                }
-
                             }, 800);
                         }
 
@@ -375,11 +342,7 @@ const Auth = {
 
                             setTimeout(() => {
 
-                                window.location.href =
-                                    this.getPath(
-                                        'login.html'
-                                    );
-
+                                window.location.href = Auth.getPath('login.html');
                             }, 1200);
                         }
 
@@ -436,10 +399,7 @@ const Auth = {
 
 
         setTimeout(() => {
-
-            window.location.href =
-                this.getPath('login.html');
-
+            window.location.href = Auth.getPath('login.html');
         }, 600);
     },
 
@@ -462,10 +422,7 @@ const Auth = {
 
 
             setTimeout(() => {
-
-                window.location.href =
-                    this.getPath('login.html');
-
+                window.location.href = Auth.getPath('login.html');
             }, 500);
 
 
@@ -487,10 +444,7 @@ const Auth = {
 
 
             setTimeout(() => {
-
-                window.location.href =
-                    this.getPath('index.html');
-
+                window.location.href = Auth.getPath('index.html');
             }, 500);
 
 
@@ -516,35 +470,18 @@ const Auth = {
 
         if (!emailInput || !passInput) return;
 
-
         if (role === 'admin') {
-
-            emailInput.value =
-                'admin@pricillamart.com';
-
-            passInput.value =
-                'Admin@123';
+            emailInput.value = 'admin@pricillamart.com';
+            passInput.value = 'Admin@123';
+        } else if (role === 'seller') {
+            emailInput.value = 'techworld@pricillamart.com';
+            passInput.value = 'Seller@123';
+        } else if (role === 'buyer') {
+            emailInput.value = 'rahul@gmail.com';
+            passInput.value = 'Buyer@123';
         }
 
-
-        else if (role === 'seller') {
-
-            emailInput.value =
-                'techworld@pricillamart.com';
-
-            passInput.value =
-                'Seller@123';
-        }
-
-
-        else if (role === 'buyer') {
-
-            emailInput.value =
-                'rahul@gmail.com';
-
-            passInput.value =
-                'Buyer@123';
-        }
+        API.showToast(`Selected ${role.toUpperCase()} demo account. Click "Sign In" to enter.`, 'info');
     }
 };
 

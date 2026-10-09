@@ -193,7 +193,12 @@ const Dashboard = {
                         <td>
                             ${o.items.map(it => `<div>${it.productName} × ${it.quantity}</div>`).join('')}
                         </td>
-                        <td><strong>₹${Number(o.totalAmount).toLocaleString('en-IN')}</strong></td>
+                        <td>
+                            <strong>₹${Number(o.totalAmount).toLocaleString('en-IN')}</strong>
+                            <div style="font-size:0.75rem; color:var(--secondary); margin-top:2px;">
+                                <i class="${o.paymentMethod === 'UPI' ? 'fas fa-qrcode' : o.paymentMethod === 'Credit Card' ? 'fas fa-credit-card' : 'fas fa-money-bill-wave'}"></i> ${o.paymentMethod || 'Cash on Delivery'}
+                            </div>
+                        </td>
                         <td>${o.createdAt.split(' ')[0]}</td>
                         <td>
                             <span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span>
@@ -330,7 +335,12 @@ const Dashboard = {
                         <td><strong>${o.orderCode}</strong></td>
                         <td>${o.buyerName}</td>
                         <td>${o.items.length} items</td>
-                        <td><strong>₹${Number(o.totalAmount).toLocaleString('en-IN')}</strong></td>
+                        <td>
+                            <strong>₹${Number(o.totalAmount).toLocaleString('en-IN')}</strong>
+                            <div style="font-size:0.75rem; color:var(--secondary); margin-top:2px;">
+                                <i class="${o.paymentMethod === 'UPI' ? 'fas fa-qrcode' : o.paymentMethod === 'Credit Card' ? 'fas fa-credit-card' : 'fas fa-money-bill-wave'}"></i> ${o.paymentMethod || 'Cash on Delivery'}
+                            </div>
+                        </td>
                         <td>${o.createdAt.split(' ')[0]}</td>
                         <td>
                             <span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span>

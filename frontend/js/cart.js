@@ -7,7 +7,9 @@ const Cart = {
         const user = API.getUser();
         if (!user) {
             API.showToast('Please log in to add items to your cart.', 'info');
-            setTimeout(() => { window.location.href = '/login.html'; }, 600);
+            setTimeout(() => {
+                window.location.href = (typeof Auth !== 'undefined' ? Auth.getPath('login.html') : 'login.html');
+            }, 600);
             return;
         }
 
@@ -57,7 +59,7 @@ const Cart = {
                     <i class="fas fa-shopping-cart fa-3x" style="color: var(--secondary); margin-bottom: 1rem;"></i>
                     <h3>Your cart is empty</h3>
                     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Please log in to view items saved in your cart.</p>
-                    <a href="/login.html" class="btn btn-primary">Login Now</a>
+                    <a href="${typeof Auth !== 'undefined' ? Auth.getPath('login.html') : 'login.html'}" class="btn btn-primary">Login Now</a>
                 </div>
             `;
             if (summaryContainer) summaryContainer.style.display = 'none';
@@ -75,7 +77,7 @@ const Cart = {
                             <i class="fas fa-shopping-bag fa-3x" style="color: var(--secondary); margin-bottom: 1rem;"></i>
                             <h3>Your shopping cart is empty</h3>
                             <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Explore our vast collection of products and start shopping today.</p>
-                            <a href="/products.html" class="btn btn-primary">Browse Products</a>
+                            <a href="${typeof Auth !== 'undefined' ? Auth.getPath('products.html') : 'products.html'}" class="btn btn-primary">Browse Products</a>
                         </div>
                     `;
                     if (summaryContainer) summaryContainer.style.display = 'none';
@@ -129,7 +131,7 @@ const Cart = {
                                 <span>Total Amount:</span>
                                 <span>₹${Number(total).toLocaleString('en-IN')}</span>
                             </div>
-                            <button class="btn btn-primary btn-block" style="margin-top: 1.5rem;" onclick="window.location.href='/checkout.html'">
+                            <button class="btn btn-primary btn-block" style="margin-top: 1.5rem;" onclick="window.location.href='${typeof Auth !== 'undefined' ? Auth.getPath('checkout.html') : 'checkout.html'}'">
                                 Proceed to Checkout <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
